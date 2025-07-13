@@ -1,9 +1,0 @@
-package dev.mizoguche.composegram
-
-class Greeting {
-    private val platform = getPlatform()
-
-    fun greet(): String {
-        return "Hello, ${platform.name}!"
-    }
-}

@@ -3,7 +3,8 @@ Composegram
 
 Instagram like app made with Compose Multiplatform.
 
-Features:
+Mock ApiClient returns mock responses.
 
+## Features
 - Timeline
 - Photo detail
