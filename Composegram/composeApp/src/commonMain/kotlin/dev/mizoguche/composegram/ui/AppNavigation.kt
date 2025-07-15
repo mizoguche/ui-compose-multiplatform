@@ -17,7 +17,9 @@ import androidx.savedstate.write
 import dev.mizoguche.composegram.ui.home.HomeRoute
 import dev.mizoguche.composegram.ui.startup.StartupRoute
 import dev.mizoguche.composegram.ui.userprofile.UserProfileRoute
+import dev.mizoguche.composegram.ui.postdetail.PostDetailRoute
 import dev.mizoguche.composegram.domain.user.UserId
+import dev.mizoguche.composegram.domain.post.PostId
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 import org.koin.mp.KoinPlatform
@@ -65,6 +67,9 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                 },
                 onNavigateToUserProfile = { userId ->
                     navController.navigate(AppRoute.UserProfile(userId))
+                },
+                onNavigateToPostDetail = { postId ->
+                    navController.navigate(AppRoute.PostDetail(postId))
                 }
             )
         }
@@ -81,6 +86,25 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                 },
                 onBackClick = {
                     navController.popBackStack()
+                }
+            )
+        }
+        
+        composable<AppRoute.PostDetail>(
+            exitTransition = { fadeOut() },
+            enterTransition = { fadeIn() },
+            typeMap = mapOf(typeOf<PostId>() to postIdNavType)
+        ) {
+            val route = it.toRoute<AppRoute.PostDetail>()
+            PostDetailRoute(
+                viewModel = koinViewModel {
+                    parametersOf(route.postId)
+                },
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onNavigateToUserProfile = { userId ->
+                    navController.navigate(AppRoute.UserProfile(userId))
                 }
             )
         }
@@ -105,4 +129,24 @@ val userIdNavType = object : NavType<UserId>(isNullableAllowed = false) {
     }
 
     override fun parseValue(value: String): UserId = UserId(value)
+}
+
+val postIdNavType = object : NavType<PostId>(isNullableAllowed = false) {
+    override fun put(
+        bundle: SavedState,
+        key: String,
+        value: PostId
+    ) {
+        bundle.write { putString(key, value.value) }
+    }
+
+    override fun get(
+        bundle: SavedState,
+        key: String
+    ): PostId? {
+        val value = bundle.read { getString(key) }
+        return PostId(value)
+    }
+
+    override fun parseValue(value: String): PostId = PostId(value)
 }

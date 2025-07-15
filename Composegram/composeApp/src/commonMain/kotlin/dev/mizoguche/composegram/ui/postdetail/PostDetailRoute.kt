@@ -1,24 +1,21 @@
-package dev.mizoguche.composegram.ui.home
+package dev.mizoguche.composegram.ui.postdetail
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import dev.mizoguche.composegram.domain.user.UserId
-import dev.mizoguche.composegram.domain.post.PostId
 
 @Composable
-fun HomeRoute(
-    viewModel: HomeViewModel,
-    onNavigateToStartup: () -> Unit,
+fun PostDetailRoute(
+    viewModel: PostDetailViewModel,
+    onBackClick: () -> Unit,
     onNavigateToUserProfile: (UserId) -> Unit,
-    onNavigateToPostDetail: (PostId) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    HomeScreen(
+    PostDetailScreen(
         uiState = uiState,
-        onSignOut = onNavigateToStartup,
+        onBackClick = onBackClick,
         onUserClick = onNavigateToUserProfile,
-        onPostClick = onNavigateToPostDetail,
     )
 }

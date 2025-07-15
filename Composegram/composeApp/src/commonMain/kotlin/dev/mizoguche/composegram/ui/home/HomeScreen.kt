@@ -13,7 +13,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import dev.mizoguche.composegram.domain.post.Post
+import dev.mizoguche.composegram.domain.post.PostSummary
+import dev.mizoguche.composegram.domain.post.PostId
 import dev.mizoguche.composegram.domain.user.UserId
 import dev.mizoguche.composegram.ui.common.ErrorScreen
 import dev.mizoguche.composegram.ui.common.LoadingScreen
@@ -25,11 +26,12 @@ fun HomeScreen(
     uiState: HomeUiState,
     onSignOut: () -> Unit,
     onUserClick: (UserId) -> Unit,
+    onPostClick: (PostId) -> Unit,
 ) {
     when (uiState) {
         HomeUiState.Empty -> EmptyScreen()
         HomeUiState.Error -> ErrorScreen()
-        is HomeUiState.Idle -> HomeContent(uiState, onSignOut, onUserClick)
+        is HomeUiState.Idle -> HomeContent(uiState, onSignOut, onUserClick, onPostClick)
         HomeUiState.Loading -> LoadingScreen()
     }
 }
@@ -61,6 +63,7 @@ private fun HomeContent(
     uiState: HomeUiState.Idle,
     onSignOut: () -> Unit,
     onUserClick: (UserId) -> Unit,
+    onPostClick: (PostId) -> Unit,
 ) {
     Scaffold {
         LazyColumn(
@@ -69,7 +72,8 @@ private fun HomeContent(
             items(uiState.posts.size) { index ->
                 PostItem(
                     post = uiState.posts[index],
-                    onUserClick = onUserClick
+                    onUserClick = onUserClick,
+                    onPostClick = onPostClick
                 )
             }
         }
@@ -78,8 +82,9 @@ private fun HomeContent(
 
 @Composable
 private fun PostItem(
-    post: Post,
-    onUserClick: (UserId) -> Unit
+    post: PostSummary,
+    onUserClick: (UserId) -> Unit,
+    onPostClick: (PostId) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -124,7 +129,8 @@ private fun PostItem(
                 contentDescription = "Post image",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(400.dp),
+                    .height(400.dp)
+                    .clickable { onPostClick(post.id) },
                 contentScale = ContentScale.Crop,
                 imageLoader = rememberImageLoader()
             )
@@ -132,17 +138,35 @@ private fun PostItem(
             Column(
                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
             ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Text(
+                            text = "❤️ ${post.likeCount}",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Text(
+                            text = "💬 ${post.commentCount}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.clickable { onPostClick(post.id) }
+                        )
+                    }
+                    Text(
+                        text = formatDateTime(post.createdAt),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                
+                Spacer(modifier = Modifier.size(4.dp))
+                
                 Text(
                     text = post.body,
                     style = MaterialTheme.typography.bodyMedium
-                )
-
-                Spacer(modifier = Modifier.size(4.dp))
-
-                Text(
-                    text = formatDateTime(post.createdAt),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -150,7 +174,7 @@ private fun PostItem(
 }
 
 private fun formatDateTime(dateTime: LocalDateTime): String {
-    return "${dateTime.year}年${dateTime.monthNumber}月${dateTime.dayOfMonth}日 ${dateTime.hour}:${
+    return "${dateTime.year}年${dateTime.month}月${dateTime.dayOfMonth}日 ${dateTime.hour}:${
         dateTime.minute.toString().padStart(2, '0')
     }"
 }

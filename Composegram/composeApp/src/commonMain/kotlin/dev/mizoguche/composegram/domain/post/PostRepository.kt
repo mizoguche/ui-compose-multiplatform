@@ -17,6 +17,6 @@ sealed class PostError {
 }
 
 interface PostRepository {
-    suspend fun select(): Either<PostError, List<Post>>
+    suspend fun selectSummaries(): Either<PostError, List<PostSummary>>
     suspend fun findBy(postId: PostId): Either<PostError, Post>
 }
