@@ -1,10 +1,21 @@
 package dev.mizoguche.composegram.ui.postdetail
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,7 +25,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import dev.mizoguche.composegram.domain.post.Comment
-import dev.mizoguche.composegram.domain.post.Post
 import dev.mizoguche.composegram.domain.user.UserId
 import dev.mizoguche.composegram.ui.common.ErrorScreen
 import dev.mizoguche.composegram.ui.common.LoadingScreen
@@ -47,18 +57,20 @@ private fun PostDetailContent(
             // Post header with user info
             item {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 12.dp, vertical = 8.dp)
-                        .clickable { onUserClick(uiState.post.user.id) },
-                    verticalAlignment = Alignment.CenterVertically
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp, vertical = 8.dp)
+                            .clickable { onUserClick(uiState.post.user.id) },
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     AsyncImage(
                         model = uiState.post.user.photoUrl,
                         contentDescription = "Profile picture",
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clip(CircleShape),
+                        modifier =
+                            Modifier
+                                .size(40.dp)
+                                .clip(CircleShape),
                         contentScale = ContentScale.Crop,
                         imageLoader = rememberImageLoader(),
                     )
@@ -67,77 +79,78 @@ private fun PostDetailContent(
                         Text(
                             text = uiState.post.user.username.value,
                             style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.SemiBold
+                            fontWeight = FontWeight.SemiBold,
                         )
                         Text(
                             text = uiState.post.user.displayName.value,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
             }
-            
+
             // Post image
             item {
                 AsyncImage(
                     model = uiState.post.photoUrl,
                     contentDescription = "Post image",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(400.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(400.dp),
                     contentScale = ContentScale.Crop,
-                    imageLoader = rememberImageLoader()
+                    imageLoader = rememberImageLoader(),
                 )
             }
-            
+
             // Post body and likes
             item {
                 Column(
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Text(
                             text = "❤️ ${uiState.post.likeCount}",
                             style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.SemiBold
+                            fontWeight = FontWeight.SemiBold,
                         )
                         Text(
                             text = formatDateTime(uiState.post.createdAt),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
-                    
+
                     Spacer(modifier = Modifier.size(8.dp))
-                    
+
                     Text(
                         text = uiState.post.body,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge,
                     )
-                    
+
                     Spacer(modifier = Modifier.size(16.dp))
-                    
+
                     HorizontalDivider()
-                    
+
                     Spacer(modifier = Modifier.size(8.dp))
-                    
+
                     Text(
                         text = "コメント (${uiState.post.comments.size})",
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
                 }
             }
-            
+
             // Comments
             items(uiState.post.comments.size) { index ->
                 CommentItem(
                     comment = uiState.post.comments[index],
-                    onUserClick = onUserClick
+                    onUserClick = onUserClick,
                 )
             }
         }
@@ -147,50 +160,52 @@ private fun PostDetailContent(
 @Composable
 private fun CommentItem(
     comment: Comment,
-    onUserClick: (UserId) -> Unit
+    onUserClick: (UserId) -> Unit,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.Top
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.Top,
     ) {
         AsyncImage(
             model = comment.user.photoUrl,
             contentDescription = "Profile picture",
-            modifier = Modifier
-                .size(32.dp)
-                .clip(CircleShape)
-                .clickable { onUserClick(comment.user.id) },
+            modifier =
+                Modifier
+                    .size(32.dp)
+                    .clip(CircleShape)
+                    .clickable { onUserClick(comment.user.id) },
             contentScale = ContentScale.Crop,
             imageLoader = rememberImageLoader(),
         )
         Spacer(modifier = Modifier.size(8.dp))
         Column(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
                     text = comment.user.username.value,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.clickable { onUserClick(comment.user.id) }
+                    modifier = Modifier.clickable { onUserClick(comment.user.id) },
                 )
                 Text(
                     text = formatDateTime(comment.createdAt),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            
+
             Spacer(modifier = Modifier.size(4.dp))
-            
+
             Text(
                 text = comment.body,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }

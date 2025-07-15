@@ -15,9 +15,11 @@ import kotlinx.coroutines.launch
 
 sealed class PostDetailUiState {
     data object Loading : PostDetailUiState()
+
     data class Idle(
         val post: Post,
     ) : PostDetailUiState()
+
     data object Error : PostDetailUiState()
 }
 
@@ -30,22 +32,24 @@ class PostDetailViewModel(
         val post: Post? = null,
         val errorMessage: String? = null,
     ) {
-        fun toUiState(): PostDetailUiState = when {
-            isLoading -> PostDetailUiState.Loading
-            errorMessage != null -> PostDetailUiState.Error
-            post != null -> PostDetailUiState.Idle(post)
-            else -> PostDetailUiState.Error
-        }
+        fun toUiState(): PostDetailUiState =
+            when {
+                isLoading -> PostDetailUiState.Loading
+                errorMessage != null -> PostDetailUiState.Error
+                post != null -> PostDetailUiState.Idle(post)
+                else -> PostDetailUiState.Error
+            }
     }
 
-    private val _state = MutableStateFlow(ViewModelState())
-    val uiState: StateFlow<PostDetailUiState> = _state
-        .map { it.toUiState() }
-        .stateIn(
-            scope = viewModelScope,
-            initialValue = PostDetailUiState.Loading,
-            started = SharingStarted.WhileSubscribed(5_000),
-        )
+    private val state = MutableStateFlow(ViewModelState())
+    val uiState: StateFlow<PostDetailUiState> =
+        state
+            .map { it.toUiState() }
+            .stateIn(
+                scope = viewModelScope,
+                initialValue = PostDetailUiState.Loading,
+                started = SharingStarted.WhileSubscribed(5_000),
+            )
 
     init {
         viewModelScope.launch {
@@ -54,15 +58,15 @@ class PostDetailViewModel(
     }
 
     suspend fun load() {
-        _state.update { it.copy(isLoading = true, errorMessage = null) }
+        state.update { it.copy(isLoading = true, errorMessage = null) }
         postRepository.findBy(postId)
             .fold(
                 ifLeft = { error ->
-                    _state.update { it.copy(isLoading = false, errorMessage = error.errorMessage) }
+                    state.update { it.copy(isLoading = false, errorMessage = error.errorMessage) }
                 },
                 ifRight = { post ->
-                    _state.update { it.copy(isLoading = false, post = post) }
-                }
+                    state.update { it.copy(isLoading = false, post = post) }
+                },
             )
     }
 }

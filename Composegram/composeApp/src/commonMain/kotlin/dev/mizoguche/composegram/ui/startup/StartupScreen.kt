@@ -36,9 +36,7 @@ fun StartupScreen(
 }
 
 @Composable
-fun StartupContent(
-    onSignIn: () -> Unit,
-) {
+fun StartupContent(onSignIn: () -> Unit) {
     Scaffold {
         Column(
             modifier = Modifier.fillMaxSize(),

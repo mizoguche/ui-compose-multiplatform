@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 
 sealed class StartupUiState {
     data object Loading : StartupUiState()
+
     data object Idle : StartupUiState()
 }
 
@@ -31,14 +32,15 @@ class StartupViewModel : ViewModel() {
         }
     }
 
-    private val _state = MutableStateFlow(ViewModelState())
-    val uiState: StateFlow<StartupUiState> = _state
-        .map { it.toUiState() }
-        .stateIn(
-            scope = viewModelScope,
-            initialValue = StartupUiState.Loading,
-            started = SharingStarted.WhileSubscribed(5_000),
-        )
+    private val state = MutableStateFlow(ViewModelState())
+    val uiState: StateFlow<StartupUiState> =
+        state
+            .map { it.toUiState() }
+            .stateIn(
+                scope = viewModelScope,
+                initialValue = StartupUiState.Loading,
+                started = SharingStarted.WhileSubscribed(5_000),
+            )
 
     private val _navigationEvent = MutableSharedFlow<StartupEvent>()
     val navigationEvent = _navigationEvent.asSharedFlow()
@@ -53,7 +55,7 @@ class StartupViewModel : ViewModel() {
         // Startup process(e.g. checking update, sign in)
         delay(1_000)
 
-        _state.emit(ViewModelState(false))
+        state.emit(ViewModelState(false))
     }
 
     fun signIn() {

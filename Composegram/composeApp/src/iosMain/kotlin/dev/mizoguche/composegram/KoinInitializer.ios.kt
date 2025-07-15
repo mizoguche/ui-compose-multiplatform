@@ -6,8 +6,9 @@ import org.koin.dsl.module
 
 fun doInitKoin() {
     initKoin(
-        platformModule = module {
-            single<PlatformContext> { PlatformContext.INSTANCE }
-        }
+        platformModule =
+            module {
+                single<PlatformContext> { PlatformContext.INSTANCE }
+            },
     )
 }

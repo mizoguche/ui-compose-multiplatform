@@ -9,9 +9,9 @@ import dev.mizoguche.composegram.data.repository.MockUserRepository
 import dev.mizoguche.composegram.domain.post.PostRepository
 import dev.mizoguche.composegram.domain.user.UserRepository
 import dev.mizoguche.composegram.ui.home.HomeViewModel
+import dev.mizoguche.composegram.ui.postdetail.PostDetailViewModel
 import dev.mizoguche.composegram.ui.startup.StartupViewModel
 import dev.mizoguche.composegram.ui.userprofile.UserProfileViewModel
-import dev.mizoguche.composegram.ui.postdetail.PostDetailViewModel
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.bind
@@ -44,7 +44,7 @@ fun initKoin(
                     }
                 },
                 platformModule,
-            )
+            ),
         )
     }
 }

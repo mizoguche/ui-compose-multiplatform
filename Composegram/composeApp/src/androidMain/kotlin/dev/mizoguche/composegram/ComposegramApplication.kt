@@ -15,9 +15,10 @@ class ComposegramApplication : Application() {
                 androidLogger()
                 androidContext(this@ComposegramApplication)
             },
-            platformModule = module {
-                single<PlatformContext> { this@ComposegramApplication }
-            },
+            platformModule =
+                module {
+                    single<PlatformContext> { this@ComposegramApplication }
+                },
         )
     }
 }

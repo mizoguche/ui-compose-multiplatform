@@ -15,9 +15,11 @@ import kotlinx.coroutines.launch
 
 sealed class UserProfileUiState {
     data object Loading : UserProfileUiState()
+
     data class Idle(
         val user: User,
     ) : UserProfileUiState()
+
     data object Error : UserProfileUiState()
 }
 
@@ -30,22 +32,24 @@ class UserProfileViewModel(
         val user: User? = null,
         val errorMessage: String? = null,
     ) {
-        fun toUiState(): UserProfileUiState = when {
-            isLoading -> UserProfileUiState.Loading
-            errorMessage != null -> UserProfileUiState.Error
-            user != null -> UserProfileUiState.Idle(user)
-            else -> UserProfileUiState.Error
-        }
+        fun toUiState(): UserProfileUiState =
+            when {
+                isLoading -> UserProfileUiState.Loading
+                errorMessage != null -> UserProfileUiState.Error
+                user != null -> UserProfileUiState.Idle(user)
+                else -> UserProfileUiState.Error
+            }
     }
 
-    private val _state = MutableStateFlow(ViewModelState())
-    val uiState: StateFlow<UserProfileUiState> = _state
-        .map { it.toUiState() }
-        .stateIn(
-            scope = viewModelScope,
-            initialValue = UserProfileUiState.Loading,
-            started = SharingStarted.WhileSubscribed(5_000),
-        )
+    private val state = MutableStateFlow(ViewModelState())
+    val uiState: StateFlow<UserProfileUiState> =
+        state
+            .map { it.toUiState() }
+            .stateIn(
+                scope = viewModelScope,
+                initialValue = UserProfileUiState.Loading,
+                started = SharingStarted.WhileSubscribed(5_000),
+            )
 
     init {
         viewModelScope.launch {
@@ -54,15 +58,15 @@ class UserProfileViewModel(
     }
 
     suspend fun load() {
-        _state.update { it.copy(isLoading = true, errorMessage = null) }
+        state.update { it.copy(isLoading = true, errorMessage = null) }
         userRepository.findBy(userId)
             .fold(
                 ifLeft = { error ->
-                    _state.update { it.copy(isLoading = false, errorMessage = error.errorMessage) }
+                    state.update { it.copy(isLoading = false, errorMessage = error.errorMessage) }
                 },
                 ifRight = { user ->
-                    _state.update { it.copy(isLoading = false, user = user) }
-                }
+                    state.update { it.copy(isLoading = false, user = user) }
+                },
             )
     }
 }
