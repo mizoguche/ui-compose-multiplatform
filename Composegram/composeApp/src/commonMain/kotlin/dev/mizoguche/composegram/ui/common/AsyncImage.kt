@@ -1,4 +1,4 @@
-package dev.mizoguche.composegram.ui.util
+package dev.mizoguche.composegram.ui.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

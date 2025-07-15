@@ -5,9 +5,12 @@ import coil3.PlatformContext
 import coil3.request.crossfade
 import coil3.util.DebugLogger
 import dev.mizoguche.composegram.data.repository.MockPostRepository
+import dev.mizoguche.composegram.data.repository.MockUserRepository
 import dev.mizoguche.composegram.domain.post.PostRepository
+import dev.mizoguche.composegram.domain.user.UserRepository
 import dev.mizoguche.composegram.ui.home.HomeViewModel
 import dev.mizoguche.composegram.ui.startup.StartupViewModel
+import dev.mizoguche.composegram.ui.userprofile.UserProfileViewModel
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.bind
@@ -26,8 +29,10 @@ fun initKoin(
                 module {
                     factory { StartupViewModel() }
                     factory { HomeViewModel(get()) }
+                    factory { params -> UserProfileViewModel(get(), params.get()) }
 
                     singleOf(::MockPostRepository) { bind<PostRepository>() }
+                    singleOf(::MockUserRepository) { bind<UserRepository>() }
 
                     single<ImageLoader> {
                         ImageLoader.Builder(get<PlatformContext>())

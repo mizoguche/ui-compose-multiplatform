@@ -1,23 +1,10 @@
 package dev.mizoguche.composegram.ui.home
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,41 +14,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import dev.mizoguche.composegram.domain.post.Post
-import dev.mizoguche.composegram.ui.util.rememberImageLoader
+import dev.mizoguche.composegram.domain.user.UserId
+import dev.mizoguche.composegram.ui.common.ErrorScreen
+import dev.mizoguche.composegram.ui.common.LoadingScreen
+import dev.mizoguche.composegram.ui.common.rememberImageLoader
 import kotlinx.datetime.LocalDateTime
 
 @Composable
 fun HomeScreen(
     uiState: HomeUiState,
     onSignOut: () -> Unit,
+    onUserClick: (UserId) -> Unit,
 ) {
     when (uiState) {
         HomeUiState.Empty -> EmptyScreen()
         HomeUiState.Error -> ErrorScreen()
-        is HomeUiState.Idle -> HomeContent(uiState, onSignOut)
+        is HomeUiState.Idle -> HomeContent(uiState, onSignOut, onUserClick)
         HomeUiState.Loading -> LoadingScreen()
     }
 }
 
-@Composable
-private fun ErrorScreen() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "エラーが発生しました",
-            style = MaterialTheme.typography.headlineSmall
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        Text(
-            text = "しばらくしてから再度お試しください",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
-}
 
 @Composable
 private fun EmptyScreen() {
@@ -83,45 +55,44 @@ private fun EmptyScreen() {
     }
 }
 
-@Composable
-private fun LoadingScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
-}
 
 @Composable
 private fun HomeContent(
     uiState: HomeUiState.Idle,
     onSignOut: () -> Unit,
+    onUserClick: (UserId) -> Unit,
 ) {
     Scaffold {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
         ) {
             items(uiState.posts.size) { index ->
-                PostItem(post = uiState.posts[index])
+                PostItem(
+                    post = uiState.posts[index],
+                    onUserClick = onUserClick
+                )
             }
         }
     }
 }
 
 @Composable
-private fun PostItem(post: Post) {
+private fun PostItem(
+    post: Post,
+    onUserClick: (UserId) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
     ) {
         Column {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                    .padding(horizontal = 12.dp, vertical = 8.dp)
+                    .clickable { onUserClick(post.user.id) },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AsyncImage(
@@ -147,7 +118,7 @@ private fun PostItem(post: Post) {
                     )
                 }
             }
-            
+
             AsyncImage(
                 model = post.photoUrl,
                 contentDescription = "Post image",
@@ -157,7 +128,7 @@ private fun PostItem(post: Post) {
                 contentScale = ContentScale.Crop,
                 imageLoader = rememberImageLoader()
             )
-            
+
             Column(
                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
             ) {
@@ -179,5 +150,7 @@ private fun PostItem(post: Post) {
 }
 
 private fun formatDateTime(dateTime: LocalDateTime): String {
-    return "${dateTime.year}年${dateTime.monthNumber}月${dateTime.dayOfMonth}日 ${dateTime.hour}:${dateTime.minute.toString().padStart(2, '0')}"
+    return "${dateTime.year}年${dateTime.monthNumber}月${dateTime.dayOfMonth}日 ${dateTime.hour}:${
+        dateTime.minute.toString().padStart(2, '0')
+    }"
 }

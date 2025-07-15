@@ -6,13 +6,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import androidx.savedstate.SavedState
+import androidx.savedstate.read
+import androidx.savedstate.write
 import dev.mizoguche.composegram.ui.home.HomeRoute
 import dev.mizoguche.composegram.ui.startup.StartupRoute
+import dev.mizoguche.composegram.ui.userprofile.UserProfileRoute
+import dev.mizoguche.composegram.domain.user.UserId
 import org.koin.core.parameter.ParametersDefinition
+import org.koin.core.parameter.parametersOf
 import org.koin.mp.KoinPlatform
+import kotlin.reflect.typeOf
 
 @Composable
 inline fun <reified T : ViewModel> koinViewModel(noinline parameters: ParametersDefinition? = null): T {
@@ -45,7 +54,7 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
         composable<AppRoute.Home>(
             exitTransition = { fadeOut() },
             enterTransition = { fadeIn() }
-        )  {
+        ) {
             HomeRoute(
                 viewModel = koinViewModel(),
                 onNavigateToStartup = {
@@ -53,8 +62,47 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                         popUpTo(AppRoute.Home) { inclusive = true }
 
                     }
+                },
+                onNavigateToUserProfile = { userId ->
+                    navController.navigate(AppRoute.UserProfile(userId))
+                }
+            )
+        }
+
+        composable<AppRoute.UserProfile>(
+            exitTransition = { fadeOut() },
+            enterTransition = { fadeIn() },
+            typeMap = mapOf(typeOf<UserId>() to userIdNavType)
+        ) {
+            val route = it.toRoute<AppRoute.UserProfile>()
+            UserProfileRoute(
+                viewModel = koinViewModel {
+                    parametersOf(route.userId)
+                },
+                onBackClick = {
+                    navController.popBackStack()
                 }
             )
         }
     }
+}
+
+val userIdNavType = object : NavType<UserId>(isNullableAllowed = false) {
+    override fun put(
+        bundle: SavedState,
+        key: String,
+        value: UserId
+    ) {
+        bundle.write { putString(key, value.value) }
+    }
+
+    override fun get(
+        bundle: SavedState,
+        key: String
+    ): UserId? {
+        val value = bundle.read { getString(key) }
+        return UserId(value)
+    }
+
+    override fun parseValue(value: String): UserId = UserId(value)
 }
