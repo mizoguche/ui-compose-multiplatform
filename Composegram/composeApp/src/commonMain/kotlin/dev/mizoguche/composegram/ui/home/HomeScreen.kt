@@ -50,21 +50,23 @@ fun HomeScreen(
 
 @Composable
 private fun EmptyScreen() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Text(
-            text = "投稿がありません",
-            style = MaterialTheme.typography.headlineSmall,
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        Text(
-            text = "最初の投稿を作成してみましょう",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+    Scaffold {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                text = "投稿がありません",
+                style = MaterialTheme.typography.headlineSmall,
+            )
+            Spacer(modifier = Modifier.size(16.dp))
+            Text(
+                text = "最初の投稿を作成してみましょう",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
     }
 }
 
