@@ -27,22 +27,10 @@ import dev.mizoguche.composegram.ui.common.ErrorScreen
 import dev.mizoguche.composegram.ui.common.LoadingScreen
 import dev.mizoguche.composegram.ui.common.rememberImageLoader
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserProfileScreen(
     uiState: UserProfileUiState,
-    onBackClick: () -> Unit,
-) {
-    when (uiState) {
-        UserProfileUiState.Error -> ErrorScreen()
-        is UserProfileUiState.Idle -> UserProfileContent(uiState, onBackClick)
-        UserProfileUiState.Loading -> LoadingScreen()
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun UserProfileContent(
-    uiState: UserProfileUiState.Idle,
     onBackClick: () -> Unit,
 ) {
     Scaffold(
@@ -60,40 +48,52 @@ private fun UserProfileContent(
             )
         },
     ) { paddingValues ->
-        Column(
+        when (uiState) {
+            UserProfileUiState.Error -> ErrorScreen()
+            is UserProfileUiState.Idle -> UserProfileContent(uiState, paddingValues)
+            UserProfileUiState.Loading -> LoadingScreen()
+        }
+    }
+}
+
+@Composable
+private fun UserProfileContent(
+    uiState: UserProfileUiState.Idle,
+    paddingValues: androidx.compose.foundation.layout.PaddingValues,
+) {
+    Column(
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        AsyncImage(
+            model = uiState.user.photoUrl,
+            contentDescription = "Profile picture",
             modifier =
                 Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            AsyncImage(
-                model = uiState.user.photoUrl,
-                contentDescription = "Profile picture",
-                modifier =
-                    Modifier
-                        .size(120.dp)
-                        .clip(CircleShape),
-                contentScale = ContentScale.Crop,
-                imageLoader = rememberImageLoader(),
-            )
+                    .size(120.dp)
+                    .clip(CircleShape),
+            contentScale = ContentScale.Crop,
+            imageLoader = rememberImageLoader(),
+        )
 
-            Spacer(modifier = Modifier.size(16.dp))
+        Spacer(modifier = Modifier.size(16.dp))
 
-            Text(
-                text = uiState.user.displayName.value,
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-            )
+        Text(
+            text = uiState.user.displayName.value,
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+        )
 
-            Spacer(modifier = Modifier.size(8.dp))
+        Spacer(modifier = Modifier.size(8.dp))
 
-            Text(
-                text = "@${uiState.user.username.value}",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
+        Text(
+            text = "@${uiState.user.username.value}",
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }

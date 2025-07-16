@@ -39,6 +39,7 @@ import dev.mizoguche.composegram.ui.common.LoadingScreen
 import dev.mizoguche.composegram.ui.common.rememberImageLoader
 import kotlinx.datetime.LocalDateTime
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     uiState: HomeUiState,
@@ -46,17 +47,6 @@ fun HomeScreen(
     onUserClick: (UserId) -> Unit,
     onPostClick: (PostId) -> Unit,
 ) {
-    when (uiState) {
-        HomeUiState.Empty -> EmptyScreen(onSettingsClick)
-        HomeUiState.Error -> ErrorScreen()
-        is HomeUiState.Idle -> HomeContent(uiState, onSettingsClick, onUserClick, onPostClick)
-        HomeUiState.Loading -> LoadingScreen()
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun EmptyScreen(onSettingsClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -72,64 +62,57 @@ private fun EmptyScreen(onSettingsClick: () -> Unit) {
             )
         },
     ) { paddingValues ->
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Text(
-                text = "投稿がありません",
-                style = MaterialTheme.typography.headlineSmall,
-            )
-            Spacer(modifier = Modifier.size(16.dp))
-            Text(
-                text = "最初の投稿を作成してみましょう",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+        when (uiState) {
+            HomeUiState.Empty -> EmptyContent(paddingValues)
+            HomeUiState.Error -> ErrorScreen()
+            is HomeUiState.Idle -> HomeContent(uiState, paddingValues, onUserClick, onPostClick)
+            HomeUiState.Loading -> LoadingScreen()
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun EmptyContent(paddingValues: androidx.compose.foundation.layout.PaddingValues) {
+    Column(
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Text(
+            text = "投稿がありません",
+            style = MaterialTheme.typography.headlineSmall,
+        )
+        Spacer(modifier = Modifier.size(16.dp))
+        Text(
+            text = "最初の投稿を作成してみましょう",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
 @Composable
 private fun HomeContent(
     uiState: HomeUiState.Idle,
-    onSettingsClick: () -> Unit,
+    paddingValues: androidx.compose.foundation.layout.PaddingValues,
     onUserClick: (UserId) -> Unit,
     onPostClick: (PostId) -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Composegram") },
-                actions = {
-                    IconButton(onClick = onSettingsClick) {
-                        Icon(
-                            imageVector = Icons.Default.Settings,
-                            contentDescription = "設定",
-                        )
-                    }
-                },
+    LazyColumn(
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+    ) {
+        items(uiState.posts.size) { index ->
+            PostItem(
+                post = uiState.posts[index],
+                onUserClick = onUserClick,
+                onPostClick = onPostClick,
             )
-        },
-    ) { paddingValues ->
-        LazyColumn(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-        ) {
-            items(uiState.posts.size) { index ->
-                PostItem(
-                    post = uiState.posts[index],
-                    onUserClick = onUserClick,
-                    onPostClick = onPostClick,
-                )
-            }
         }
     }
 }

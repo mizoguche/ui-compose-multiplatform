@@ -37,23 +37,10 @@ import dev.mizoguche.composegram.ui.common.LoadingScreen
 import dev.mizoguche.composegram.ui.common.rememberImageLoader
 import kotlinx.datetime.LocalDateTime
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostDetailScreen(
     uiState: PostDetailUiState,
-    onBackClick: () -> Unit,
-    onUserClick: (UserId) -> Unit,
-) {
-    when (uiState) {
-        PostDetailUiState.Error -> ErrorScreen()
-        is PostDetailUiState.Idle -> PostDetailContent(uiState, onBackClick, onUserClick)
-        PostDetailUiState.Loading -> LoadingScreen()
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun PostDetailContent(
-    uiState: PostDetailUiState.Idle,
     onBackClick: () -> Unit,
     onUserClick: (UserId) -> Unit,
 ) {
@@ -72,111 +59,124 @@ private fun PostDetailContent(
             )
         },
     ) { paddingValues ->
-        LazyColumn(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-        ) {
-            // Post header with user info
-            item {
-                Row(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 12.dp, vertical = 8.dp)
-                            .clickable { onUserClick(uiState.post.user.id) },
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    AsyncImage(
-                        model = uiState.post.user.photoUrl,
-                        contentDescription = "Profile picture",
-                        modifier =
-                            Modifier
-                                .size(40.dp)
-                                .clip(CircleShape),
-                        contentScale = ContentScale.Crop,
-                        imageLoader = rememberImageLoader(),
-                    )
-                    Spacer(modifier = Modifier.size(8.dp))
-                    Column {
-                        Text(
-                            text = uiState.post.user.username.value,
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                        Text(
-                            text = uiState.post.user.displayName.value,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                }
-            }
+        when (uiState) {
+            PostDetailUiState.Error -> ErrorScreen()
+            is PostDetailUiState.Idle -> PostDetailContent(uiState, paddingValues, onUserClick)
+            PostDetailUiState.Loading -> LoadingScreen()
+        }
+    }
+}
 
-            // Post image
-            item {
+@Composable
+private fun PostDetailContent(
+    uiState: PostDetailUiState.Idle,
+    paddingValues: androidx.compose.foundation.layout.PaddingValues,
+    onUserClick: (UserId) -> Unit,
+) {
+    LazyColumn(
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+    ) {
+        // Post header with user info
+        item {
+            Row(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp, vertical = 8.dp)
+                        .clickable { onUserClick(uiState.post.user.id) },
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 AsyncImage(
-                    model = uiState.post.photoUrl,
-                    contentDescription = "Post image",
+                    model = uiState.post.user.photoUrl,
+                    contentDescription = "Profile picture",
                     modifier =
                         Modifier
-                            .fillMaxWidth()
-                            .height(400.dp),
+                            .size(40.dp)
+                            .clip(CircleShape),
                     contentScale = ContentScale.Crop,
                     imageLoader = rememberImageLoader(),
                 )
-            }
-
-            // Post body and likes
-            item {
-                Column(
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        Text(
-                            text = "❤️ ${uiState.post.likeCount}",
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                        Text(
-                            text = formatDateTime(uiState.post.createdAt),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.size(8.dp))
-
+                Spacer(modifier = Modifier.size(8.dp))
+                Column {
                     Text(
-                        text = uiState.post.body,
+                        text = uiState.post.user.username.value,
                         style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.SemiBold,
                     )
-
-                    Spacer(modifier = Modifier.size(16.dp))
-
-                    HorizontalDivider()
-
-                    Spacer(modifier = Modifier.size(8.dp))
-
                     Text(
-                        text = "コメント (${uiState.post.comments.size})",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
+                        text = uiState.post.user.displayName.value,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
+        }
 
-            // Comments
-            items(uiState.post.comments.size) { index ->
-                CommentItem(
-                    comment = uiState.post.comments[index],
-                    onUserClick = onUserClick,
+        // Post image
+        item {
+            AsyncImage(
+                model = uiState.post.photoUrl,
+                contentDescription = "Post image",
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(400.dp),
+                contentScale = ContentScale.Crop,
+                imageLoader = rememberImageLoader(),
+            )
+        }
+
+        // Post body and likes
+        item {
+            Column(
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = "❤️ ${uiState.post.likeCount}",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                    Text(
+                        text = formatDateTime(uiState.post.createdAt),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = uiState.post.body,
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+
+                Spacer(modifier = Modifier.size(16.dp))
+
+                HorizontalDivider()
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "コメント (${uiState.post.comments.size})",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
                 )
             }
+        }
+
+        // Comments
+        items(uiState.post.comments.size) { index ->
+            CommentItem(
+                comment = uiState.post.comments[index],
+                onUserClick = onUserClick,
+            )
         }
     }
 }
