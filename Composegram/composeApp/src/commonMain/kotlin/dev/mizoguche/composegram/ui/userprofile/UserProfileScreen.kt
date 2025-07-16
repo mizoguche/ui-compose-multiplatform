@@ -9,12 +9,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import dev.mizoguche.composegram.ui.component.ComposegramIcon
+import dev.mizoguche.composegram.ui.component.ComposegramIconButton
+import dev.mizoguche.composegram.ui.component.ComposegramTheme
+import dev.mizoguche.composegram.ui.component.ComposegramScaffold
+import dev.mizoguche.composegram.ui.component.ComposegramText
+import dev.mizoguche.composegram.ui.component.ComposegramTopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,13 +33,13 @@ fun UserProfileScreen(
     uiState: UserProfileUiState,
     onBackClick: () -> Unit,
 ) {
-    Scaffold(
+    ComposegramScaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("プロフィール") },
+            ComposegramTopAppBar(
+                title = { ComposegramText("プロフィール") },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
+                    ComposegramIconButton(onClick = onBackClick) {
+                        ComposegramIcon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "戻る",
                         )
@@ -82,18 +82,18 @@ private fun UserProfileContent(
 
         Spacer(modifier = Modifier.size(16.dp))
 
-        Text(
+        ComposegramText(
             text = uiState.user.displayName.value,
-            style = MaterialTheme.typography.headlineMedium,
+            style = ComposegramTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
         )
 
         Spacer(modifier = Modifier.size(8.dp))
 
-        Text(
+        ComposegramText(
             text = "@${uiState.user.username.value}",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = ComposegramTheme.typography.bodyLarge,
+            color = ComposegramTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

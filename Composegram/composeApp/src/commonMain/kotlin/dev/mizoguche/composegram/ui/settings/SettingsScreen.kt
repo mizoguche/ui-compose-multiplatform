@@ -8,12 +8,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import dev.mizoguche.composegram.ui.component.ComposegramIcon
+import dev.mizoguche.composegram.ui.component.ComposegramIconButton
+import dev.mizoguche.composegram.ui.component.ComposegramTheme
+import dev.mizoguche.composegram.ui.component.ComposegramScaffold
+import dev.mizoguche.composegram.ui.component.ComposegramText
+import dev.mizoguche.composegram.ui.component.ComposegramTopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -39,13 +39,13 @@ private fun SettingsContent(
     onBackClick: () -> Unit,
     onLogoutClick: () -> Unit,
 ) {
-    Scaffold(
+    ComposegramScaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("設定") },
+            ComposegramTopAppBar(
+                title = { ComposegramText("設定") },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
+                    ComposegramIconButton(onClick = onBackClick) {
+                        ComposegramIcon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "戻る",
                         )
@@ -73,13 +73,13 @@ private fun SettingsItem(
     title: String,
     onClick: () -> Unit,
 ) {
-    Text(
+    ComposegramText(
         text = title,
         modifier =
             Modifier
                 .fillMaxWidth()
                 .clickable { onClick() }
                 .padding(horizontal = 16.dp, vertical = 20.dp),
-        style = MaterialTheme.typography.bodyLarge,
+        style = ComposegramTheme.typography.bodyLarge,
     )
 }

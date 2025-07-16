@@ -14,15 +14,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import dev.mizoguche.composegram.ui.component.ComposegramCard
+import dev.mizoguche.composegram.ui.component.ComposegramCardDefaults
+import dev.mizoguche.composegram.ui.component.ComposegramIcon
+import dev.mizoguche.composegram.ui.component.ComposegramIconButton
+import dev.mizoguche.composegram.ui.component.ComposegramTheme
+import dev.mizoguche.composegram.ui.component.ComposegramScaffold
+import dev.mizoguche.composegram.ui.component.ComposegramText
+import dev.mizoguche.composegram.ui.component.ComposegramTopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,13 +47,13 @@ fun HomeScreen(
     onUserClick: (UserId) -> Unit,
     onPostClick: (PostId) -> Unit,
 ) {
-    Scaffold(
+    ComposegramScaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Composegram") },
+            ComposegramTopAppBar(
+                title = { ComposegramText("Composegram") },
                 actions = {
-                    IconButton(onClick = onSettingsClick) {
-                        Icon(
+                    ComposegramIconButton(onClick = onSettingsClick) {
+                        ComposegramIcon(
                             imageVector = Icons.Default.Settings,
                             contentDescription = "設定",
                         )
@@ -81,15 +81,15 @@ private fun EmptyContent(paddingValues: androidx.compose.foundation.layout.Paddi
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Text(
+        ComposegramText(
             text = "投稿がありません",
-            style = MaterialTheme.typography.headlineSmall,
+            style = ComposegramTheme.typography.headlineSmall,
         )
         Spacer(modifier = Modifier.size(16.dp))
-        Text(
+        ComposegramText(
             text = "最初の投稿を作成してみましょう",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = ComposegramTheme.typography.bodyMedium,
+            color = ComposegramTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -123,12 +123,12 @@ private fun PostItem(
     onUserClick: (UserId) -> Unit,
     onPostClick: (PostId) -> Unit,
 ) {
-    Card(
+    ComposegramCard(
         modifier =
             Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        elevation = ComposegramCardDefaults.cardElevation(defaultElevation = 0.dp),
     ) {
         Column {
             Row(
@@ -151,15 +151,15 @@ private fun PostItem(
                 )
                 Spacer(modifier = Modifier.size(8.dp))
                 Column {
-                    Text(
+                    ComposegramText(
                         text = post.user.username.value,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = ComposegramTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
                     )
-                    Text(
+                    ComposegramText(
                         text = post.user.displayName.value,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = ComposegramTheme.typography.bodySmall,
+                        color = ComposegramTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -186,28 +186,28 @@ private fun PostItem(
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        Text(
+                        ComposegramText(
                             text = "❤️ ${post.likeCount}",
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = ComposegramTheme.typography.bodyMedium,
                         )
-                        Text(
+                        ComposegramText(
                             text = "💬 ${post.commentCount}",
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = ComposegramTheme.typography.bodyMedium,
                             modifier = Modifier.clickable { onPostClick(post.id) },
                         )
                     }
-                    Text(
+                    ComposegramText(
                         text = formatDateTime(post.createdAt),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = ComposegramTheme.typography.bodySmall,
+                        color = ComposegramTheme.colorScheme.onSurfaceVariant,
                     )
                 }
 
                 Spacer(modifier = Modifier.size(4.dp))
 
-                Text(
+                ComposegramText(
                     text = post.body,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = ComposegramTheme.typography.bodyMedium,
                 )
             }
         }

@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import dev.mizoguche.composegram.ui.component.ComposegramCircularProgressIndicator
+import dev.mizoguche.composegram.ui.component.ComposegramTheme
+import dev.mizoguche.composegram.ui.component.ComposegramText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,15 +21,15 @@ fun ErrorScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Text(
+        ComposegramText(
             text = "エラーが発生しました",
-            style = MaterialTheme.typography.headlineSmall,
+            style = ComposegramTheme.typography.headlineSmall,
         )
         Spacer(modifier = Modifier.size(16.dp))
-        Text(
+        ComposegramText(
             text = "しばらくしてから再度お試しください",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = ComposegramTheme.typography.bodyMedium,
+            color = ComposegramTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -40,6 +40,6 @@ fun LoadingScreen() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        CircularProgressIndicator()
+        ComposegramCircularProgressIndicator()
     }
 }

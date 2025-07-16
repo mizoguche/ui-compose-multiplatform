@@ -15,13 +15,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import dev.mizoguche.composegram.ui.component.ComposegramHorizontalDivider
+import dev.mizoguche.composegram.ui.component.ComposegramIcon
+import dev.mizoguche.composegram.ui.component.ComposegramIconButton
+import dev.mizoguche.composegram.ui.component.ComposegramTheme
+import dev.mizoguche.composegram.ui.component.ComposegramScaffold
+import dev.mizoguche.composegram.ui.component.ComposegramText
+import dev.mizoguche.composegram.ui.component.ComposegramTopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,13 +44,13 @@ fun PostDetailScreen(
     onBackClick: () -> Unit,
     onUserClick: (UserId) -> Unit,
 ) {
-    Scaffold(
+    ComposegramScaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("投稿") },
+            ComposegramTopAppBar(
+                title = { ComposegramText("投稿") },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
+                    ComposegramIconButton(onClick = onBackClick) {
+                        ComposegramIcon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "戻る",
                         )
@@ -101,15 +101,15 @@ private fun PostDetailContent(
                 )
                 Spacer(modifier = Modifier.size(8.dp))
                 Column {
-                    Text(
+                    ComposegramText(
                         text = uiState.post.user.username.value,
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = ComposegramTheme.typography.bodyLarge,
                         fontWeight = FontWeight.SemiBold,
                     )
-                    Text(
+                    ComposegramText(
                         text = uiState.post.user.displayName.value,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = ComposegramTheme.typography.bodyMedium,
+                        color = ComposegramTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -138,34 +138,34 @@ private fun PostDetailContent(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    Text(
+                    ComposegramText(
                         text = "❤️ ${uiState.post.likeCount}",
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = ComposegramTheme.typography.bodyLarge,
                         fontWeight = FontWeight.SemiBold,
                     )
-                    Text(
+                    ComposegramText(
                         text = formatDateTime(uiState.post.createdAt),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = ComposegramTheme.typography.bodyMedium,
+                        color = ComposegramTheme.colorScheme.onSurfaceVariant,
                     )
                 }
 
                 Spacer(modifier = Modifier.size(8.dp))
 
-                Text(
+                ComposegramText(
                     text = uiState.post.body,
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = ComposegramTheme.typography.bodyLarge,
                 )
 
                 Spacer(modifier = Modifier.size(16.dp))
 
-                HorizontalDivider()
+                ComposegramHorizontalDivider()
 
                 Spacer(modifier = Modifier.size(8.dp))
 
-                Text(
+                ComposegramText(
                     text = "コメント (${uiState.post.comments.size})",
-                    style = MaterialTheme.typography.titleMedium,
+                    style = ComposegramTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                 )
             }
@@ -212,24 +212,24 @@ private fun CommentItem(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                Text(
+                ComposegramText(
                     text = comment.user.username.value,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = ComposegramTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.clickable { onUserClick(comment.user.id) },
                 )
-                Text(
+                ComposegramText(
                     text = formatDateTime(comment.createdAt),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = ComposegramTheme.typography.bodySmall,
+                    color = ComposegramTheme.colorScheme.onSurfaceVariant,
                 )
             }
 
             Spacer(modifier = Modifier.size(4.dp))
 
-            Text(
+            ComposegramText(
                 text = comment.body,
-                style = MaterialTheme.typography.bodyMedium,
+                style = ComposegramTheme.typography.bodyMedium,
             )
         }
     }

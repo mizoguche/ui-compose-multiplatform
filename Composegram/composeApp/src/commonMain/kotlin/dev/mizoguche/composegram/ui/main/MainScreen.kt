@@ -5,11 +5,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import dev.mizoguche.composegram.ui.component.ComposegramIcon
+import dev.mizoguche.composegram.ui.component.ComposegramNavigationBar
+import dev.mizoguche.composegram.ui.component.ComposegramNavigationBarItem
+import dev.mizoguche.composegram.ui.component.ComposegramScaffold
+import dev.mizoguche.composegram.ui.component.ComposegramText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -58,18 +58,18 @@ fun MainScreen(
         BottomNavItem.Settings,
     )
 
-    Scaffold(
+    ComposegramScaffold(
         bottomBar = {
-            NavigationBar {
+            ComposegramNavigationBar {
                 bottomNavItems.forEach { item ->
-                    NavigationBarItem(
+                    ComposegramNavigationBarItem(
                         icon = {
-                            Icon(
+                            ComposegramIcon(
                                 imageVector = item.icon,
                                 contentDescription = item.label,
                             )
                         },
-                        label = { Text(item.label) },
+                        label = { ComposegramText(item.label) },
                         selected = currentDestination?.hierarchy?.any { destination ->
                             when (item) {
                                 is BottomNavItem.Home -> destination.route == MainRoute.Home::class.qualifiedName
