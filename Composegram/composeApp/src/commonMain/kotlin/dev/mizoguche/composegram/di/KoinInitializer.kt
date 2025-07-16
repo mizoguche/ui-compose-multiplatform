@@ -10,6 +10,7 @@ import dev.mizoguche.composegram.domain.post.PostRepository
 import dev.mizoguche.composegram.domain.user.UserRepository
 import dev.mizoguche.composegram.ui.home.HomeViewModel
 import dev.mizoguche.composegram.ui.postdetail.PostDetailViewModel
+import dev.mizoguche.composegram.ui.settings.SettingsViewModel
 import dev.mizoguche.composegram.ui.startup.StartupViewModel
 import dev.mizoguche.composegram.ui.userprofile.UserProfileViewModel
 import org.koin.core.context.startKoin
@@ -32,6 +33,7 @@ fun initKoin(
                     factory { HomeViewModel(get()) }
                     factory { params -> UserProfileViewModel(get(), params.get()) }
                     factory { params -> PostDetailViewModel(get(), params.get()) }
+                    factory { SettingsViewModel() }
 
                     singleOf(::MockPostRepository) { bind<PostRepository>() }
                     singleOf(::MockUserRepository) { bind<UserRepository>() }

@@ -17,4 +17,7 @@ sealed class AppRoute {
 
     @Serializable
     data class PostDetail(val postId: PostId) : AppRoute()
+
+    @Serializable
+    data object Settings : AppRoute()
 }

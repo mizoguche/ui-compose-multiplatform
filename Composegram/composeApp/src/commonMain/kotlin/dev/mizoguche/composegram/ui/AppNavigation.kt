@@ -18,6 +18,7 @@ import dev.mizoguche.composegram.domain.post.PostId
 import dev.mizoguche.composegram.domain.user.UserId
 import dev.mizoguche.composegram.ui.home.HomeRoute
 import dev.mizoguche.composegram.ui.postdetail.PostDetailRoute
+import dev.mizoguche.composegram.ui.settings.SettingsRoute
 import dev.mizoguche.composegram.ui.startup.StartupRoute
 import dev.mizoguche.composegram.ui.userprofile.UserProfileRoute
 import org.koin.core.parameter.ParametersDefinition
@@ -106,6 +107,20 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                 },
                 onNavigateToUserProfile = { userId ->
                     navController.navigate(AppRoute.UserProfile(userId))
+                },
+            )
+        }
+
+        composable<AppRoute.Settings>(
+            exitTransition = { fadeOut() },
+            enterTransition = { fadeIn() },
+        ) {
+            SettingsRoute(
+                viewModel = koinViewModel(),
+                onNavigateToStartup = {
+                    navController.navigate(AppRoute.Startup) {
+                        popUpTo(AppRoute.Settings) { inclusive = true }
+                    }
                 },
             )
         }
