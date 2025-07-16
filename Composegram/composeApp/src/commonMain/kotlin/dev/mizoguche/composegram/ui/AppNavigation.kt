@@ -60,10 +60,8 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
         ) {
             HomeRoute(
                 viewModel = koinViewModel(),
-                onNavigateToStartup = {
-                    navController.navigate(AppRoute.Startup) {
-                        popUpTo(AppRoute.Home) { inclusive = true }
-                    }
+                onNavigateToSettings = {
+                    navController.navigate(AppRoute.Settings)
                 },
                 onNavigateToUserProfile = { userId ->
                     navController.navigate(AppRoute.UserProfile(userId))
@@ -117,6 +115,9 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
         ) {
             SettingsRoute(
                 viewModel = koinViewModel(),
+                onBackClick = {
+                    navController.popBackStack()
+                },
                 onNavigateToStartup = {
                     navController.navigate(AppRoute.Startup) {
                         popUpTo(AppRoute.Settings) { inclusive = true }

@@ -9,7 +9,7 @@ import dev.mizoguche.composegram.domain.user.UserId
 @Composable
 fun HomeRoute(
     viewModel: HomeViewModel,
-    onNavigateToStartup: () -> Unit,
+    onNavigateToSettings: () -> Unit,
     onNavigateToUserProfile: (UserId) -> Unit,
     onNavigateToPostDetail: (PostId) -> Unit,
 ) {
@@ -17,7 +17,7 @@ fun HomeRoute(
 
     HomeScreen(
         uiState = uiState,
-        onSignOut = onNavigateToStartup,
+        onSettingsClick = onNavigateToSettings,
         onUserClick = onNavigateToUserProfile,
         onPostClick = onNavigateToPostDetail,
     )

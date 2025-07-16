@@ -12,11 +12,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,23 +42,41 @@ import kotlinx.datetime.LocalDateTime
 @Composable
 fun HomeScreen(
     uiState: HomeUiState,
-    onSignOut: () -> Unit,
+    onSettingsClick: () -> Unit,
     onUserClick: (UserId) -> Unit,
     onPostClick: (PostId) -> Unit,
 ) {
     when (uiState) {
-        HomeUiState.Empty -> EmptyScreen()
+        HomeUiState.Empty -> EmptyScreen(onSettingsClick)
         HomeUiState.Error -> ErrorScreen()
-        is HomeUiState.Idle -> HomeContent(uiState, onSignOut, onUserClick, onPostClick)
+        is HomeUiState.Idle -> HomeContent(uiState, onSettingsClick, onUserClick, onPostClick)
         HomeUiState.Loading -> LoadingScreen()
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun EmptyScreen() {
-    Scaffold {
+private fun EmptyScreen(onSettingsClick: () -> Unit) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Composegram") },
+                actions = {
+                    IconButton(onClick = onSettingsClick) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = "設定",
+                        )
+                    }
+                },
+            )
+        },
+    ) { paddingValues ->
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -70,16 +94,34 @@ private fun EmptyScreen() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HomeContent(
     uiState: HomeUiState.Idle,
-    onSignOut: () -> Unit,
+    onSettingsClick: () -> Unit,
     onUserClick: (UserId) -> Unit,
     onPostClick: (PostId) -> Unit,
 ) {
-    Scaffold {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Composegram") },
+                actions = {
+                    IconButton(onClick = onSettingsClick) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = "設定",
+                        )
+                    }
+                },
+            )
+        },
+    ) { paddingValues ->
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
         ) {
             items(uiState.posts.size) { index ->
                 PostItem(
