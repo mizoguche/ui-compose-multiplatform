@@ -6,25 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
-import androidx.savedstate.SavedState
-import androidx.savedstate.read
-import androidx.savedstate.write
-import dev.mizoguche.composegram.domain.post.PostId
-import dev.mizoguche.composegram.domain.user.UserId
-import dev.mizoguche.composegram.ui.home.HomeRoute
-import dev.mizoguche.composegram.ui.postdetail.PostDetailRoute
-import dev.mizoguche.composegram.ui.settings.SettingsRoute
+import dev.mizoguche.composegram.ui.main.MainScreen
 import dev.mizoguche.composegram.ui.startup.StartupRoute
-import dev.mizoguche.composegram.ui.userprofile.UserProfileRoute
 import org.koin.core.parameter.ParametersDefinition
-import org.koin.core.parameter.parametersOf
 import org.koin.mp.KoinPlatform
-import kotlin.reflect.typeOf
 
 @Composable
 inline fun <reified T : ViewModel> koinViewModel(noinline parameters: ParametersDefinition? = null): T {
@@ -47,125 +35,24 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
             StartupRoute(
                 viewModel = koinViewModel(),
                 onNavigateToHome = {
-                    navController.navigate(AppRoute.Home) {
+                    navController.navigate(AppRoute.Main) {
                         popUpTo(AppRoute.Startup) { inclusive = true }
                     }
                 },
             )
         }
 
-        composable<AppRoute.Home>(
+        composable<AppRoute.Main>(
             exitTransition = { fadeOut() },
             enterTransition = { fadeIn() },
         ) {
-            HomeRoute(
-                viewModel = koinViewModel(),
-                onNavigateToSettings = {
-                    navController.navigate(AppRoute.Settings)
-                },
-                onNavigateToUserProfile = { userId ->
-                    navController.navigate(AppRoute.UserProfile(userId))
-                },
-                onNavigateToPostDetail = { postId ->
-                    navController.navigate(AppRoute.PostDetail(postId))
-                },
-            )
-        }
-
-        composable<AppRoute.UserProfile>(
-            exitTransition = { fadeOut() },
-            enterTransition = { fadeIn() },
-            typeMap = mapOf(typeOf<UserId>() to userIdNavType),
-        ) {
-            val route = it.toRoute<AppRoute.UserProfile>()
-            UserProfileRoute(
-                viewModel =
-                    koinViewModel {
-                        parametersOf(route.userId)
-                    },
-                onBackClick = {
-                    navController.popBackStack()
-                },
-            )
-        }
-
-        composable<AppRoute.PostDetail>(
-            exitTransition = { fadeOut() },
-            enterTransition = { fadeIn() },
-            typeMap = mapOf(typeOf<PostId>() to postIdNavType),
-        ) {
-            val route = it.toRoute<AppRoute.PostDetail>()
-            PostDetailRoute(
-                viewModel =
-                    koinViewModel {
-                        parametersOf(route.postId)
-                    },
-                onBackClick = {
-                    navController.popBackStack()
-                },
-                onNavigateToUserProfile = { userId ->
-                    navController.navigate(AppRoute.UserProfile(userId))
-                },
-            )
-        }
-
-        composable<AppRoute.Settings>(
-            exitTransition = { fadeOut() },
-            enterTransition = { fadeIn() },
-        ) {
-            SettingsRoute(
-                viewModel = koinViewModel(),
-                onBackClick = {
-                    navController.popBackStack()
-                },
+            MainScreen(
                 onNavigateToStartup = {
                     navController.navigate(AppRoute.Startup) {
-                        popUpTo(AppRoute.Settings) { inclusive = true }
+                        popUpTo(AppRoute.Main) { inclusive = true }
                     }
                 },
             )
         }
     }
 }
-
-val userIdNavType =
-    object : NavType<UserId>(isNullableAllowed = false) {
-        override fun put(
-            bundle: SavedState,
-            key: String,
-            value: UserId,
-        ) {
-            bundle.write { putString(key, value.value) }
-        }
-
-        override fun get(
-            bundle: SavedState,
-            key: String,
-        ): UserId? {
-            val value = bundle.read { getString(key) }
-            return UserId(value)
-        }
-
-        override fun parseValue(value: String): UserId = UserId(value)
-    }
-
-val postIdNavType =
-    object : NavType<PostId>(isNullableAllowed = false) {
-        override fun put(
-            bundle: SavedState,
-            key: String,
-            value: PostId,
-        ) {
-            bundle.write { putString(key, value.value) }
-        }
-
-        override fun get(
-            bundle: SavedState,
-            key: String,
-        ): PostId? {
-            val value = bundle.read { getString(key) }
-            return PostId(value)
-        }
-
-        override fun parseValue(value: String): PostId = PostId(value)
-    }
