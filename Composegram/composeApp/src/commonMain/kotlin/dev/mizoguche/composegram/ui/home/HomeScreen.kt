@@ -3,6 +3,7 @@ package dev.mizoguche.composegram.ui.home
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -72,7 +73,7 @@ fun HomeScreen(
 }
 
 @Composable
-private fun EmptyContent(paddingValues: androidx.compose.foundation.layout.PaddingValues) {
+private fun EmptyContent(paddingValues: PaddingValues) {
     Column(
         modifier =
             Modifier
@@ -96,7 +97,7 @@ private fun EmptyContent(paddingValues: androidx.compose.foundation.layout.Paddi
 @Composable
 private fun HomeContent(
     uiState: HomeUiState.Idle,
-    paddingValues: androidx.compose.foundation.layout.PaddingValues,
+    paddingValues: PaddingValues,
     onUserClick: (UserId) -> Unit,
     onPostClick: (PostId) -> Unit,
 ) {
@@ -104,7 +105,8 @@ private fun HomeContent(
         modifier =
             Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
+                .padding(paddingValues)
+                .padding(horizontal = 12.dp),
     ) {
         items(uiState.posts.size) { index ->
             PostItem(
