@@ -3,11 +3,10 @@ package dev.mizoguche.composegram.ui.component
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemColors
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import dev.mizoguche.composegram.ui.common.ComposegramColors
 
 @Composable
 fun RowScope.ComposegramNavigationBarItem(
@@ -18,7 +17,6 @@ fun RowScope.ComposegramNavigationBarItem(
     enabled: Boolean = true,
     label: @Composable (() -> Unit)? = null,
     alwaysShowLabel: Boolean = true,
-    colors: NavigationBarItemColors = NavigationBarItemDefaults.colors(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     NavigationBarItem(
@@ -29,7 +27,7 @@ fun RowScope.ComposegramNavigationBarItem(
         enabled = enabled,
         label = label,
         alwaysShowLabel = alwaysShowLabel,
-        colors = colors,
+        colors = ComposegramColors.navigationBarItemColors(),
         interactionSource = interactionSource,
     )
 }

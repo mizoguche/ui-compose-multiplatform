@@ -99,7 +99,6 @@ private fun UserProfileContent(
         ComposegramText(
             text = "@${uiState.user.username.value}",
             style = ComposegramTheme.typography.bodyLarge,
-            color = ComposegramTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

@@ -109,7 +109,6 @@ private fun PostDetailContent(
                     ComposegramText(
                         text = uiState.post.user.displayName.value,
                         style = ComposegramTheme.typography.bodyMedium,
-                        color = ComposegramTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -146,7 +145,6 @@ private fun PostDetailContent(
                     ComposegramText(
                         text = formatDateTime(uiState.post.createdAt),
                         style = ComposegramTheme.typography.bodyMedium,
-                        color = ComposegramTheme.colorScheme.onSurfaceVariant,
                     )
                 }
 
@@ -221,7 +219,6 @@ private fun CommentItem(
                 ComposegramText(
                     text = formatDateTime(comment.createdAt),
                     style = ComposegramTheme.typography.bodySmall,
-                    color = ComposegramTheme.colorScheme.onSurfaceVariant,
                 )
             }
 

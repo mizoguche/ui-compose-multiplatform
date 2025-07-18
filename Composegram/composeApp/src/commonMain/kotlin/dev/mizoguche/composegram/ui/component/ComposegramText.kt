@@ -4,7 +4,6 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
@@ -15,12 +14,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
+import dev.mizoguche.composegram.ui.common.ComposegramColors
 
 @Composable
 fun ComposegramText(
     text: String,
     modifier: Modifier = Modifier,
-    color: Color = Color.Unspecified,
     fontSize: TextUnit = TextUnit.Unspecified,
     fontStyle: FontStyle? = null,
     fontWeight: FontWeight? = null,
@@ -39,7 +38,7 @@ fun ComposegramText(
     Text(
         text = text,
         modifier = modifier,
-        color = color,
+        color = ComposegramColors.textColor(),
         fontSize = fontSize,
         fontStyle = fontStyle,
         fontWeight = fontWeight,
@@ -61,7 +60,6 @@ fun ComposegramText(
 fun ComposegramText(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
-    color: Color = Color.Unspecified,
     fontSize: TextUnit = TextUnit.Unspecified,
     fontStyle: FontStyle? = null,
     fontWeight: FontWeight? = null,
@@ -81,7 +79,7 @@ fun ComposegramText(
     Text(
         text = text,
         modifier = modifier,
-        color = color,
+        color = ComposegramColors.textColor(),
         fontSize = fontSize,
         fontStyle = fontStyle,
         fontWeight = fontWeight,

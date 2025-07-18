@@ -57,7 +57,7 @@ fun MainScreen(onNavigateToStartup: () -> Unit) {
             BottomNavItem.Settings,
         )
 
-    var selectedItem by remember { mutableStateOf(BottomNavItem.Home) }
+    var selectedItem by remember { mutableStateOf<BottomNavItem>(BottomNavItem.Home) }
 
     // 現在のdestinationがBottomNavigationのいずれかの場合、選択状態を更新
     when (currentDestination?.route) {

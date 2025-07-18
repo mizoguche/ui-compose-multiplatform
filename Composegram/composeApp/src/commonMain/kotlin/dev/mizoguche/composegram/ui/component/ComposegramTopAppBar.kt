@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import dev.mizoguche.composegram.ui.common.ComposegramColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -18,7 +18,6 @@ fun ComposegramTopAppBar(
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
-    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(),
     scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     TopAppBar(
@@ -27,7 +26,7 @@ fun ComposegramTopAppBar(
         navigationIcon = navigationIcon,
         actions = actions,
         windowInsets = windowInsets,
-        colors = colors,
+        colors = ComposegramColors.topAppBarColors(),
         scrollBehavior = scrollBehavior,
     )
 }

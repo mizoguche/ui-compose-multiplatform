@@ -89,7 +89,6 @@ private fun EmptyContent(paddingValues: androidx.compose.foundation.layout.Paddi
         ComposegramText(
             text = "最初の投稿を作成してみましょう",
             style = ComposegramTheme.typography.bodyMedium,
-            color = ComposegramTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -159,7 +158,6 @@ private fun PostItem(
                     ComposegramText(
                         text = post.user.displayName.value,
                         style = ComposegramTheme.typography.bodySmall,
-                        color = ComposegramTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -199,7 +197,6 @@ private fun PostItem(
                     ComposegramText(
                         text = formatDateTime(post.createdAt),
                         style = ComposegramTheme.typography.bodySmall,
-                        color = ComposegramTheme.colorScheme.onSurfaceVariant,
                     )
                 }
 

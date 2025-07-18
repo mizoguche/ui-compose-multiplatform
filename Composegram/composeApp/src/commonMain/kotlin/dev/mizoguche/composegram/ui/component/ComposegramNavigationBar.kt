@@ -8,22 +8,21 @@ import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import dev.mizoguche.composegram.ui.common.ComposegramColors
 
 @Composable
 fun ComposegramNavigationBar(
     modifier: Modifier = Modifier,
-    containerColor: Color = NavigationBarDefaults.containerColor,
-    contentColor: Color = MaterialTheme.colorScheme.contentColorFor(containerColor),
     tonalElevation: Dp = NavigationBarDefaults.Elevation,
     windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
     content: @Composable RowScope.() -> Unit,
 ) {
+    val containerColor = ComposegramColors.navigationBarContainerColor()
     NavigationBar(
         modifier = modifier,
         containerColor = containerColor,
-        contentColor = contentColor,
+        contentColor = MaterialTheme.colorScheme.contentColorFor(containerColor),
         tonalElevation = tonalElevation,
         windowInsets = windowInsets,
         content = content,

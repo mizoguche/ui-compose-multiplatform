@@ -29,7 +29,6 @@ fun ErrorScreen() {
         ComposegramText(
             text = "しばらくしてから再度お試しください",
             style = ComposegramTheme.typography.bodyMedium,
-            color = ComposegramTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
