@@ -13,29 +13,33 @@ import dev.mizoguche.composegram.ui.common.ComposegramColors
 @Composable
 fun ComposegramContainer(content: @Composable () -> Unit) {
     val darkTheme = isSystemInDarkTheme()
-    val defaultBrush = Brush.verticalGradient(
-        colors = if (darkTheme) {
-            listOf(
-                ComposegramColors.lightBlue600,
-                ComposegramColors.lightPurple600,
-            )
-        } else {
-            listOf(
-                ComposegramColors.lightGreen100,
-                ComposegramColors.lightYellow100,
-            )
-        },
-    )
+    val defaultBrush =
+        Brush.verticalGradient(
+            colors =
+                if (darkTheme) {
+                    listOf(
+                        ComposegramColors.lightBlue600,
+                        ComposegramColors.lightPurple600,
+                    )
+                } else {
+                    listOf(
+                        ComposegramColors.lightGreen100,
+                        ComposegramColors.lightYellow100,
+                    )
+                },
+        )
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(brush = defaultBrush),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(brush = defaultBrush),
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .safeDrawingPadding(),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .safeDrawingPadding(),
         ) {
             content()
         }

@@ -16,10 +16,11 @@ fun ComposegramTheme(
     typography: Typography = MaterialTheme.typography,
     content: @Composable () -> Unit,
 ) {
-    val defaultColorScheme = when {
-        darkTheme -> ComposegramColors.DarkColorScheme
-        else -> ComposegramColors.LightColorScheme
-    }
+    val defaultColorScheme =
+        when {
+            darkTheme -> ComposegramColors.DarkColorScheme
+            else -> ComposegramColors.LightColorScheme
+        }
 
     MaterialTheme(
         colorScheme = defaultColorScheme,

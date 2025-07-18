@@ -1,7 +1,19 @@
 package dev.mizoguche.composegram.ui.common
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.*
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.ProgressIndicatorDefaults
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
@@ -69,44 +81,42 @@ object ComposegramColors {
     val grey600 = Color(0xFF333536)
     val grey700 = Color(0xFF161718)
 
-    val DarkColorScheme = darkColorScheme(
-        primary = lightBlue200,
-        secondary = lightPink200,
-        tertiary = lightPurple200,
-        background = lightBlue600,
-        surface = lightBlue500,
-        onPrimary = grey500,
-        onSecondary = grey500,
-        onTertiary = grey500,
-        onBackground = grey100,
-        onSurface = grey100,
-    )
+    val DarkColorScheme =
+        darkColorScheme(
+            primary = lightBlue200,
+            secondary = lightPink200,
+            tertiary = lightPurple200,
+            background = lightBlue600,
+            surface = lightBlue500,
+            onPrimary = grey500,
+            onSecondary = grey500,
+            onTertiary = grey500,
+            onBackground = grey100,
+            onSurface = grey100,
+        )
 
-    val LightColorScheme = lightColorScheme(
-        primary = lightBlue200,
-        secondary = lightPink200,
-        tertiary = lightPurple200,
-        background = lightGreen200,
-        surface = lightRed200,
-        onPrimary = grey500,
-        onSecondary = grey500,
-        onTertiary = grey500,
-        onBackground = grey500,
-        onSurface = grey500,
-    )
+    val LightColorScheme =
+        lightColorScheme(
+            primary = lightBlue200,
+            secondary = lightPink200,
+            tertiary = lightPurple200,
+            background = lightGreen200,
+            surface = lightRed200,
+            onPrimary = grey500,
+            onSecondary = grey500,
+            onTertiary = grey500,
+            onBackground = grey500,
+            onSurface = grey500,
+        )
 
     @Composable
-    fun buttonColors(
-        darkTheme: Boolean = isSystemInDarkTheme()
-    ): ButtonColors {
+    fun buttonColors(darkTheme: Boolean = isSystemInDarkTheme()): ButtonColors {
         val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
         return ButtonDefaults.buttonColors()
     }
 
     @Composable
-    fun cardColors(
-        darkTheme: Boolean = isSystemInDarkTheme()
-    ): CardColors {
+    fun cardColors(darkTheme: Boolean = isSystemInDarkTheme()): CardColors {
         val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
         return CardColors(
             containerColor = colorScheme.surface,
@@ -117,17 +127,13 @@ object ComposegramColors {
     }
 
     @Composable
-    fun iconButtonColors(
-        darkTheme: Boolean = isSystemInDarkTheme()
-    ): IconButtonColors {
+    fun iconButtonColors(darkTheme: Boolean = isSystemInDarkTheme()): IconButtonColors {
         val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
         return IconButtonDefaults.iconButtonColors()
     }
 
     @Composable
-    fun navigationBarItemColors(
-        darkTheme: Boolean = isSystemInDarkTheme()
-    ): NavigationBarItemColors {
+    fun navigationBarItemColors(darkTheme: Boolean = isSystemInDarkTheme()): NavigationBarItemColors {
         val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
         return NavigationBarItemColors(
             selectedIconColor = colorScheme.onPrimary,
@@ -142,9 +148,7 @@ object ComposegramColors {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun topAppBarColors(
-        darkTheme: Boolean = isSystemInDarkTheme()
-    ): TopAppBarColors {
+    fun topAppBarColors(darkTheme: Boolean = isSystemInDarkTheme()): TopAppBarColors {
         val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
         return TopAppBarColors(
             containerColor = Color.Transparent,
@@ -156,57 +160,43 @@ object ComposegramColors {
     }
 
     @Composable
-    fun circularProgressIndicatorColor(
-        darkTheme: Boolean = isSystemInDarkTheme()
-    ): Color {
+    fun circularProgressIndicatorColor(darkTheme: Boolean = isSystemInDarkTheme()): Color {
         val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
         return ProgressIndicatorDefaults.circularColor
     }
 
     @Composable
-    fun circularProgressIndicatorTrackColor(
-        darkTheme: Boolean = isSystemInDarkTheme()
-    ): Color {
+    fun circularProgressIndicatorTrackColor(darkTheme: Boolean = isSystemInDarkTheme()): Color {
         val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
         return ProgressIndicatorDefaults.circularTrackColor
     }
 
     @Composable
-    fun dividerColor(
-        darkTheme: Boolean = isSystemInDarkTheme()
-    ): Color {
+    fun dividerColor(darkTheme: Boolean = isSystemInDarkTheme()): Color {
         val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
         return DividerDefaults.color
     }
 
     @Composable
-    fun navigationBarContainerColor(
-        darkTheme: Boolean = isSystemInDarkTheme()
-    ): Color {
+    fun navigationBarContainerColor(darkTheme: Boolean = isSystemInDarkTheme()): Color {
         val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
         return Color.Transparent
     }
 
     @Composable
-    fun scaffoldContainerColor(
-        darkTheme: Boolean = isSystemInDarkTheme()
-    ): Color {
+    fun scaffoldContainerColor(darkTheme: Boolean = isSystemInDarkTheme()): Color {
         val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
         return colorScheme.background
     }
 
     @Composable
-    fun iconTintColor(
-        darkTheme: Boolean = isSystemInDarkTheme()
-    ): Color {
+    fun iconTintColor(darkTheme: Boolean = isSystemInDarkTheme()): Color {
         val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
         return LocalContentColor.current
     }
 
     @Composable
-    fun textColor(
-        darkTheme: Boolean = isSystemInDarkTheme()
-    ): Color {
+    fun textColor(darkTheme: Boolean = isSystemInDarkTheme()): Color {
         val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
         return colorScheme.onSurface
     }
