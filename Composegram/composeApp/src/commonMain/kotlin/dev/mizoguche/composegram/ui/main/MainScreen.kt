@@ -5,20 +5,20 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import dev.mizoguche.composegram.ui.component.ComposegramIcon
 import dev.mizoguche.composegram.ui.component.ComposegramNavigationBar
 import dev.mizoguche.composegram.ui.component.ComposegramNavigationBarItem
 import dev.mizoguche.composegram.ui.component.ComposegramScaffold
 import dev.mizoguche.composegram.ui.component.ComposegramText
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import dev.mizoguche.composegram.domain.user.UserId
 
 sealed class BottomNavItem(
     val route: MainRoute,
@@ -32,7 +32,7 @@ sealed class BottomNavItem(
     )
 
     data object Profile : BottomNavItem(
-        route = MainRoute.UserProfile(UserId("user1")),
+        route = MainRoute.MyProfile,
         icon = Icons.Default.Person,
         label = "プロフィール",
     )
@@ -45,18 +45,26 @@ sealed class BottomNavItem(
 }
 
 @Composable
-fun MainScreen(
-    onNavigateToStartup: () -> Unit,
-) {
+fun MainScreen(onNavigateToStartup: () -> Unit) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    val bottomNavItems = listOf(
-        BottomNavItem.Home,
-        BottomNavItem.Profile,
-        BottomNavItem.Settings,
-    )
+    val bottomNavItems =
+        listOf(
+            BottomNavItem.Home,
+            BottomNavItem.Profile,
+            BottomNavItem.Settings,
+        )
+
+    var selectedItem by remember { mutableStateOf(BottomNavItem.Home) }
+
+    // 現在のdestinationがBottomNavigationのいずれかの場合、選択状態を更新
+    when (currentDestination?.route) {
+        MainRoute.Home::class.qualifiedName -> selectedItem = BottomNavItem.Home
+        MainRoute.MyProfile::class.qualifiedName -> selectedItem = BottomNavItem.Profile
+        MainRoute.Settings::class.qualifiedName -> selectedItem = BottomNavItem.Settings
+    }
 
     ComposegramScaffold(
         bottomBar = {
@@ -70,14 +78,9 @@ fun MainScreen(
                             )
                         },
                         label = { ComposegramText(item.label) },
-                        selected = currentDestination?.hierarchy?.any { destination ->
-                            when (item) {
-                                is BottomNavItem.Home -> destination.route == MainRoute.Home::class.qualifiedName
-                                is BottomNavItem.Profile -> destination.route == MainRoute.UserProfile::class.qualifiedName
-                                is BottomNavItem.Settings -> destination.route == MainRoute.Settings::class.qualifiedName
-                            }
-                        } == true,
+                        selected = selectedItem == item,
                         onClick = {
+                            selectedItem = item
                             navController.navigate(item.route) {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true

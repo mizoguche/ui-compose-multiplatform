@@ -9,12 +9,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import dev.mizoguche.composegram.ui.component.ComposegramIcon
-import dev.mizoguche.composegram.ui.component.ComposegramIconButton
-import dev.mizoguche.composegram.ui.component.ComposegramTheme
-import dev.mizoguche.composegram.ui.component.ComposegramScaffold
-import dev.mizoguche.composegram.ui.component.ComposegramText
-import dev.mizoguche.composegram.ui.component.ComposegramTopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,25 +20,37 @@ import coil3.compose.AsyncImage
 import dev.mizoguche.composegram.ui.common.ErrorScreen
 import dev.mizoguche.composegram.ui.common.LoadingScreen
 import dev.mizoguche.composegram.ui.common.rememberImageLoader
+import dev.mizoguche.composegram.ui.component.ComposegramIcon
+import dev.mizoguche.composegram.ui.component.ComposegramIconButton
+import dev.mizoguche.composegram.ui.component.ComposegramScaffold
+import dev.mizoguche.composegram.ui.component.ComposegramText
+import dev.mizoguche.composegram.ui.component.ComposegramTheme
+import dev.mizoguche.composegram.ui.component.ComposegramTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserProfileScreen(
     uiState: UserProfileUiState,
     onBackClick: () -> Unit,
+    isRootScreen: Boolean = false,
 ) {
     ComposegramScaffold(
         topBar = {
             ComposegramTopAppBar(
                 title = { ComposegramText("プロフィール") },
-                navigationIcon = {
-                    ComposegramIconButton(onClick = onBackClick) {
-                        ComposegramIcon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "戻る",
-                        )
-                    }
-                },
+                navigationIcon =
+                    if (!isRootScreen) {
+                        {
+                            ComposegramIconButton(onClick = onBackClick) {
+                                ComposegramIcon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = "戻る",
+                                )
+                            }
+                        }
+                    } else {
+                        {}
+                    },
             )
         },
     ) { paddingValues ->

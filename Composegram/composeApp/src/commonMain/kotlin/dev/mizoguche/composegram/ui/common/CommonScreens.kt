@@ -6,13 +6,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import dev.mizoguche.composegram.ui.component.ComposegramCircularProgressIndicator
-import dev.mizoguche.composegram.ui.component.ComposegramTheme
-import dev.mizoguche.composegram.ui.component.ComposegramText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.mizoguche.composegram.ui.component.ComposegramCircularProgressIndicator
+import dev.mizoguche.composegram.ui.component.ComposegramText
+import dev.mizoguche.composegram.ui.component.ComposegramTheme
 
 @Composable
 fun ErrorScreen() {

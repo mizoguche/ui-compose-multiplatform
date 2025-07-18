@@ -58,12 +58,30 @@ fun MainNavigation(
         ) {
             val route = it.toRoute<MainRoute.UserProfile>()
             UserProfileRoute(
-                viewModel = koinViewModel {
-                    parametersOf(route.userId)
-                },
+                viewModel =
+                    koinViewModel {
+                        parametersOf(route.userId)
+                    },
                 onBackClick = {
                     navController.popBackStack()
                 },
+                isRootScreen = false,
+            )
+        }
+
+        composable<MainRoute.MyProfile>(
+            exitTransition = { fadeOut() },
+            enterTransition = { fadeIn() },
+        ) {
+            UserProfileRoute(
+                viewModel =
+                    koinViewModel {
+                        parametersOf(UserId("user1"))
+                    },
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                isRootScreen = true,
             )
         }
 
@@ -74,9 +92,10 @@ fun MainNavigation(
         ) {
             val route = it.toRoute<MainRoute.PostDetail>()
             PostDetailRoute(
-                viewModel = koinViewModel {
-                    parametersOf(route.postId)
-                },
+                viewModel =
+                    koinViewModel {
+                        parametersOf(route.postId)
+                    },
                 onBackClick = {
                     navController.popBackStack()
                 },

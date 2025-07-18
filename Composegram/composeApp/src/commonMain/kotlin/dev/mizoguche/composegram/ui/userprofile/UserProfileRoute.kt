@@ -8,11 +8,13 @@ import androidx.compose.runtime.getValue
 fun UserProfileRoute(
     viewModel: UserProfileViewModel,
     onBackClick: () -> Unit,
+    isRootScreen: Boolean = false,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     UserProfileScreen(
         uiState = uiState,
         onBackClick = onBackClick,
+        isRootScreen = isRootScreen,
     )
 }

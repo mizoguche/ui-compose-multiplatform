@@ -13,6 +13,9 @@ sealed class MainRoute {
     data class UserProfile(val userId: UserId) : MainRoute()
 
     @Serializable
+    data object MyProfile : MainRoute()
+
+    @Serializable
     data class PostDetail(val postId: PostId) : MainRoute()
 
     @Serializable

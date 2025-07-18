@@ -5,18 +5,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import dev.mizoguche.composegram.ui.component.ComposegramIcon
-import dev.mizoguche.composegram.ui.component.ComposegramIconButton
-import dev.mizoguche.composegram.ui.component.ComposegramTheme
-import dev.mizoguche.composegram.ui.component.ComposegramScaffold
-import dev.mizoguche.composegram.ui.component.ComposegramText
-import dev.mizoguche.composegram.ui.component.ComposegramTopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.mizoguche.composegram.ui.component.ComposegramScaffold
+import dev.mizoguche.composegram.ui.component.ComposegramText
+import dev.mizoguche.composegram.ui.component.ComposegramTheme
+import dev.mizoguche.composegram.ui.component.ComposegramTopAppBar
 
 @Composable
 fun SettingsScreen(
@@ -43,14 +39,6 @@ private fun SettingsContent(
         topBar = {
             ComposegramTopAppBar(
                 title = { ComposegramText("設定") },
-                navigationIcon = {
-                    ComposegramIconButton(onClick = onBackClick) {
-                        ComposegramIcon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "戻る",
-                        )
-                    }
-                },
             )
         },
     ) { paddingValues ->

@@ -64,13 +64,14 @@ object ComposegramCardDefaults {
         contentColor: androidx.compose.ui.graphics.Color = CardDefaults.cardColors().contentColor,
         disabledContainerColor: androidx.compose.ui.graphics.Color = CardDefaults.cardColors().disabledContainerColor,
         disabledContentColor: androidx.compose.ui.graphics.Color = CardDefaults.cardColors().disabledContentColor,
-    ): CardColors = CardDefaults.cardColors(
-        containerColor = containerColor,
-        contentColor = contentColor,
-        disabledContainerColor = disabledContainerColor,
-        disabledContentColor = disabledContentColor,
-    )
-    
+    ): CardColors =
+        CardDefaults.cardColors(
+            containerColor = containerColor,
+            contentColor = contentColor,
+            disabledContainerColor = disabledContainerColor,
+            disabledContentColor = disabledContentColor,
+        )
+
     @Composable
     fun cardElevation(
         defaultElevation: androidx.compose.ui.unit.Dp = 1.dp,
@@ -78,11 +79,12 @@ object ComposegramCardDefaults {
         focusedElevation: androidx.compose.ui.unit.Dp = 1.dp,
         hoveredElevation: androidx.compose.ui.unit.Dp = 2.dp,
         disabledElevation: androidx.compose.ui.unit.Dp = 0.dp,
-    ): CardElevation = CardDefaults.cardElevation(
-        defaultElevation = defaultElevation,
-        pressedElevation = pressedElevation,
-        focusedElevation = focusedElevation,
-        hoveredElevation = hoveredElevation,
-        disabledElevation = disabledElevation,
-    )
+    ): CardElevation =
+        CardDefaults.cardElevation(
+            defaultElevation = defaultElevation,
+            pressedElevation = pressedElevation,
+            focusedElevation = focusedElevation,
+            hoveredElevation = hoveredElevation,
+            disabledElevation = disabledElevation,
+        )
 }
