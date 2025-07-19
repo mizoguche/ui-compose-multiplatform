@@ -67,6 +67,10 @@ kotlin {
             implementation(libs.coil3.compose.core)
             implementation(libs.coil3.core)
             implementation(libs.coil3.network.ktor)
+
+            // Compottie
+            implementation(libs.compottie)
+            implementation(libs.compottie.resources)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
