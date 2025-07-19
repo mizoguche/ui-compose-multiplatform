@@ -151,8 +151,8 @@ object ComposegramColors {
     fun topAppBarColors(darkTheme: Boolean = isSystemInDarkTheme()): TopAppBarColors {
         val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
         return TopAppBarColors(
-            containerColor = grey100.copy(alpha = 0.8f),
-            scrolledContainerColor = Color.Transparent,
+            containerColor = colorScheme.surface,
+            scrolledContainerColor = colorScheme.surface.copy(alpha = 0.7f),
             navigationIconContentColor = colorScheme.onBackground,
             titleContentColor = colorScheme.onBackground,
             actionIconContentColor = colorScheme.onBackground,
