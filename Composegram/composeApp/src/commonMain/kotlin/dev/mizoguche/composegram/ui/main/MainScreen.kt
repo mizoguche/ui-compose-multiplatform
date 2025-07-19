@@ -8,12 +8,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.BottomAppBarDefaults
+import androidx.compose.material3.BottomAppBarScrollBehavior
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -53,6 +57,7 @@ sealed class BottomNavItem(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(onNavigateToStartup: () -> Unit) {
     val navController = rememberNavController()
@@ -81,9 +86,14 @@ fun MainScreen(onNavigateToStartup: () -> Unit) {
         )
     }
 
+    val scrollBehavior = BottomAppBarDefaults.exitAlwaysScrollBehavior()
+
     ComposegramScaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         bottomBar = {
-            ComposegramNavigationBar {
+            ComposegramNavigationBar(
+                scrollBehavior = scrollBehavior,
+            ) {
                 bottomNavItems.forEach { item ->
                     ComposegramNavigationBarItem(
                         icon = {
@@ -124,8 +134,7 @@ fun MainScreen(onNavigateToStartup: () -> Unit) {
         MainNavigation(
             navController = navController,
             onNavigateToStartup = onNavigateToStartup,
-            modifier = Modifier.fillMaxSize(),
-            bottomNavPadding = innerPadding,
+            modifier = Modifier.fillMaxSize().padding(innerPadding),
         )
     }
 }

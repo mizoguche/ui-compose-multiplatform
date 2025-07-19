@@ -178,7 +178,7 @@ object ComposegramColors {
     }
 
     @Composable
-    fun navigationBarContainerColor(darkTheme: Boolean = isSystemInDarkTheme()): Color {
+    fun bottomAppBarContainerColor(darkTheme: Boolean = isSystemInDarkTheme()): Color {
         val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
         return Color.Transparent
     }

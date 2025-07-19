@@ -2,7 +2,6 @@ package dev.mizoguche.composegram.ui.main
 
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -29,7 +28,6 @@ fun MainNavigation(
     navController: NavHostController = rememberNavController(),
     onNavigateToStartup: () -> Unit,
     modifier: Modifier = Modifier,
-    bottomNavPadding: PaddingValues,
 ) {
     NavHost(
         navController = navController,
@@ -42,16 +40,12 @@ fun MainNavigation(
         ) {
             HomeRoute(
                 viewModel = koinViewModel(),
-                onNavigateToSettings = {
-                    navController.navigate(MainRoute.Settings)
-                },
                 onNavigateToUserProfile = { userId ->
                     navController.navigate(MainRoute.UserProfile(userId))
                 },
                 onNavigateToPostDetail = { postId ->
                     navController.navigate(MainRoute.PostDetail(postId))
                 },
-                bottomNavPadding = bottomNavPadding,
             )
         }
 

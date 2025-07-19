@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,15 +13,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -35,8 +33,6 @@ import dev.mizoguche.composegram.ui.common.LoadingScreen
 import dev.mizoguche.composegram.ui.common.rememberImageLoader
 import dev.mizoguche.composegram.ui.component.ComposegramCard
 import dev.mizoguche.composegram.ui.component.ComposegramCardDefaults
-import dev.mizoguche.composegram.ui.component.ComposegramIcon
-import dev.mizoguche.composegram.ui.component.ComposegramIconButton
 import dev.mizoguche.composegram.ui.component.ComposegramScaffold
 import dev.mizoguche.composegram.ui.component.ComposegramText
 import dev.mizoguche.composegram.ui.component.ComposegramTheme
@@ -47,46 +43,23 @@ import kotlinx.datetime.LocalDateTime
 @Composable
 fun HomeScreen(
     uiState: HomeUiState,
-    onSettingsClick: () -> Unit,
     onUserClick: (UserId) -> Unit,
     onPostClick: (PostId) -> Unit,
-    bottomNavPadding: PaddingValues,
 ) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     ComposegramScaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             ComposegramTopAppBar(
                 title = { ComposegramText("Composegram") },
-                actions = {
-                    ComposegramIconButton(onClick = onSettingsClick) {
-                        ComposegramIcon(
-                            imageVector = Icons.Default.Settings,
-                            contentDescription = "設定",
-                        )
-                    }
-                },
+                scrollBehavior = scrollBehavior,
             )
         },
     ) { paddingValues ->
-        val layoutDirection = LocalLayoutDirection.current
-        val padding =
-            PaddingValues(
-                start =
-                    paddingValues.calculateStartPadding(layoutDirection) +
-                        bottomNavPadding.calculateStartPadding(
-                            layoutDirection,
-                        ),
-                top = paddingValues.calculateTopPadding() + bottomNavPadding.calculateTopPadding(),
-                end =
-                    paddingValues.calculateEndPadding(layoutDirection) +
-                        bottomNavPadding.calculateEndPadding(
-                            layoutDirection,
-                        ),
-                bottom = paddingValues.calculateBottomPadding() + bottomNavPadding.calculateBottomPadding(),
-            )
         when (uiState) {
-            HomeUiState.Empty -> EmptyContent(padding)
+            HomeUiState.Empty -> EmptyContent(paddingValues)
             HomeUiState.Error -> ErrorScreen()
-            is HomeUiState.Idle -> HomeContent(uiState, padding, onUserClick, onPostClick)
+            is HomeUiState.Idle -> HomeContent(uiState, paddingValues, onUserClick, onPostClick)
             HomeUiState.Loading -> LoadingScreen()
         }
     }
