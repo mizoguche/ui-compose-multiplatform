@@ -2,6 +2,7 @@ package dev.mizoguche.composegram.ui.component
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -17,7 +18,6 @@ fun ComposegramTopAppBar(
     modifier: Modifier = Modifier,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
-    windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     TopAppBar(
@@ -25,7 +25,7 @@ fun ComposegramTopAppBar(
         modifier = modifier,
         navigationIcon = navigationIcon,
         actions = actions,
-        windowInsets = windowInsets,
+        windowInsets = WindowInsets.statusBars,
         colors = ComposegramColors.topAppBarColors(),
         scrollBehavior = scrollBehavior,
     )

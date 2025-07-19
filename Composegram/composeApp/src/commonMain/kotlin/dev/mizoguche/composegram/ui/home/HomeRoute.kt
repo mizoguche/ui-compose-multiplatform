@@ -1,5 +1,6 @@
 package dev.mizoguche.composegram.ui.home
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -12,6 +13,7 @@ fun HomeRoute(
     onNavigateToSettings: () -> Unit,
     onNavigateToUserProfile: (UserId) -> Unit,
     onNavigateToPostDetail: (PostId) -> Unit,
+    bottomNavPadding: PaddingValues,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -20,5 +22,6 @@ fun HomeRoute(
         onSettingsClick = onNavigateToSettings,
         onUserClick = onNavigateToUserProfile,
         onPostClick = onNavigateToPostDetail,
+        bottomNavPadding = bottomNavPadding,
     )
 }

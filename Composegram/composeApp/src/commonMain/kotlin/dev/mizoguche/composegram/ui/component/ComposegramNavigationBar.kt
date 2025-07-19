@@ -2,6 +2,7 @@ package dev.mizoguche.composegram.ui.component
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
@@ -15,7 +16,6 @@ import dev.mizoguche.composegram.ui.common.ComposegramColors
 fun ComposegramNavigationBar(
     modifier: Modifier = Modifier,
     tonalElevation: Dp = NavigationBarDefaults.Elevation,
-    windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
     content: @Composable RowScope.() -> Unit,
 ) {
     val containerColor = ComposegramColors.navigationBarContainerColor()
@@ -24,7 +24,7 @@ fun ComposegramNavigationBar(
         containerColor = containerColor,
         contentColor = MaterialTheme.colorScheme.contentColorFor(containerColor),
         tonalElevation = tonalElevation,
-        windowInsets = windowInsets,
+        windowInsets = WindowInsets.navigationBars,
         content = content,
     )
 }

@@ -8,6 +8,7 @@ import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun ComposegramScaffold(
@@ -16,7 +17,6 @@ fun ComposegramScaffold(
     snackbarHost: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
-    contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
@@ -27,7 +27,7 @@ fun ComposegramScaffold(
         floatingActionButtonPosition = floatingActionButtonPosition,
         containerColor = Color.Transparent,
         contentColor = contentColorFor(Color.Transparent),
-        contentWindowInsets = contentWindowInsets,
+        contentWindowInsets = WindowInsets(0.dp),
         content = content,
     )
 }

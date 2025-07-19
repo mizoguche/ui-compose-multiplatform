@@ -1,5 +1,6 @@
 package dev.mizoguche.composegram.ui.main
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -97,7 +98,8 @@ fun MainScreen(onNavigateToStartup: () -> Unit) {
         MainNavigation(
             navController = navController,
             onNavigateToStartup = onNavigateToStartup,
-            modifier = Modifier.padding(innerPadding),
+            modifier = Modifier.fillMaxSize(),
+            bottomNavPadding = innerPadding,
         )
     }
 }
