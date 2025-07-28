@@ -71,6 +71,10 @@ kotlin {
             // Compottie
             implementation(libs.compottie)
             implementation(libs.compottie.resources)
+
+            // HypnoticCanvas
+            implementation(libs.hypnoticcanvas)
+            implementation(libs.hypnoticcanvas.shaders)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
